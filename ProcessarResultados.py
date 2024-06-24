@@ -2,6 +2,7 @@ import json
 import pandas as pd
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import train_test_split
+# Tem q testar o modelo
 
 
 def processar_resultados():

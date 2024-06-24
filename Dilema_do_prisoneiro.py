@@ -3,7 +3,7 @@ import axelrod as axl
 import json
 
 
-def rodar_campeonato():
+def rodar_campeonato(noise_levels = [0.0, 0.1, 0.2, 0.3, 0.4]):
     # Ensure the directory exists
     output_dir = 'output'
     os.makedirs(output_dir, exist_ok=True)
@@ -26,9 +26,6 @@ def rodar_campeonato():
         axl.EvolvedFSM16(),
         axl.CyclerDC()
     ]
-
-    # Noise levels for the tournaments
-    noise_levels = [0.0, 0.1, 0.2, 0.3, 0.4]
 
     # Dictionary to store the results
     tournament_results = {}

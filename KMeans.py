@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 
 def rodar_kmeans(n_clusters=2):
 
+
     with open('output/tournament_results.json', 'r') as file:
         data = json.load(file)
 
@@ -16,7 +17,7 @@ def rodar_kmeans(n_clusters=2):
         for entry in entries:
             rates = {
                 "CD_rate": entry["CD_rate"],
-                "DC_rate": entry["DC_rate"]
+                "DC_rate": entry["Median_score"]
                 # "CC_to_C_rate": entry["CC_to_C_rate"]
             }
             cluster_data.append(rates)
@@ -31,13 +32,55 @@ def rodar_kmeans(n_clusters=2):
     # Visualizar os ‘clusters’
     plt.scatter(df['CD_rate'], df['DC_rate'], c=df['Cluster'], cmap='viridis')
     plt.xlabel('CD_rate')
-    plt.ylabel('DC_rate')
+    plt.ylabel('Median_score')
     plt.title(f'Clusters K-Means (k={n_clusters})')
     plt.colorbar(label='Cluster')
     plt.show()
 
     # Exibir os dados clusterizados
     print(df)
+
+def rodar_kmeans(noise_levels, n_clusters=3):
+    # Carregar dados de um arquivo JSON
+    with open('output/tournament_results.json', 'r') as file:
+        data = json.load(file)
+
+    for noise_level in noise_levels:
+        # Preparar os dados para o nível de ruído atual
+        if f"Noise_{noise_level}" in data:
+            cluster_data = []
+            for entry in data[f"Noise_{noise_level}"]:
+                rates = {
+                    "CD_rate": entry["CD_rate"],
+                    "DC_rate": entry["Median_score"],
+               #     "CC_to_C_rate": entry["CC_to_C_rate"]
+                }
+                cluster_data.append(rates)
+
+            # Converter dados em um DataFrame do Pandas
+            df = pd.DataFrame(cluster_data)
+
+            # Aplicar K-Means com k=3
+            kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+            df['Cluster'] = kmeans.fit_predict(df)
+
+            # Visualizar os clusters
+            plt.scatter(df['CD_rate'], df['DC_rate'], c=df['Cluster'], cmap='viridis')
+            plt.xlabel('CD_rate')
+            plt.ylabel('DC_rate')
+            plt.title(f'Clusters K-Means (k={n_clusters}) - Noise {noise_level}')
+            plt.colorbar(label='Cluster')
+
+            # Salvar o gráfico
+            plt.savefig(f'kmeans_clusters_noise_{noise_level}.png')
+            plt.show()
+            plt.close()
+
+            # Exibir os dados clusterizados
+            print(f'Dados clusterizados para Noise {noise_level}:')
+            print(df)
+        else:
+            print(f'No data available for Noise {noise_level}')
 
 
 if __name__ == "__main__":
