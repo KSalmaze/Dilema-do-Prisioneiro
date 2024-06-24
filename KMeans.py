@@ -32,7 +32,7 @@ def rodar_kmeans(n_clusters=2):
     plt.scatter(df['CD_rate'], df['DC_rate'], c=df['Cluster'], cmap='viridis')
     plt.xlabel('CD_rate')
     plt.ylabel('DC_rate')
-    plt.title('Clusters K-Means (k=3)')
+    plt.title(f'Clusters K-Means (k={n_clusters})')
     plt.colorbar(label='Cluster')
     plt.show()
 
