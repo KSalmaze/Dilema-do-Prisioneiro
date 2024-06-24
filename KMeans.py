@@ -5,7 +5,7 @@ import json
 import matplotlib.pyplot as plt
 
 
-def rodar_kmeans():
+def rodar_kmeans(n_clusters=2):
 
     with open('output/tournament_results.json', 'r') as file:
         data = json.load(file)
@@ -16,8 +16,8 @@ def rodar_kmeans():
         for entry in entries:
             rates = {
                 "CD_rate": entry["CD_rate"],
-                "DC_rate": entry["DC_rate"],
-                "CC_to_C_rate": entry["CC_to_C_rate"]
+                "DC_rate": entry["DC_rate"]
+                # "CC_to_C_rate": entry["CC_to_C_rate"]
             }
             cluster_data.append(rates)
 
@@ -25,7 +25,7 @@ def rodar_kmeans():
     df = pd.DataFrame(cluster_data)
 
     # Aplicar K-Means com k=3
-    kmeans = KMeans(n_clusters=3, random_state=42)
+    kmeans = KMeans(n_clusters=n_clusters, random_state=42)
     df['Cluster'] = kmeans.fit_predict(df)
 
     # Visualizar os ‘clusters’

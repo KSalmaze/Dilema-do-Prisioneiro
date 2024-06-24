@@ -6,4 +6,4 @@ Dilema_do_prisoneiro.rodar_campeonato()
 
 ProcessarResultados.processar_resultados()
 
-KMeans.rodar_kmeans()
+KMeans.rodar_kmeans(4)
