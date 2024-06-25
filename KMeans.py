@@ -30,7 +30,7 @@ def rodar_kmeans(n_clusters=2):
     df['Cluster'] = kmeans.fit_predict(df)
 
     # Visualizar os ‘clusters’
-    plt.scatter(df['CD_rate'], df['DC_rate'], c=df['Cluster'], cmap='viridis')
+    plt.scatter(df['CD_rate'], df['Median_score'], c=df['Cluster'], cmap='viridis')
     plt.xlabel('CD_rate')
     plt.ylabel('Median_score')
     plt.title(f'Clusters K-Means (k={n_clusters})')
@@ -51,9 +51,11 @@ def rodar_kmeans(noise_levels, n_clusters=3):
             cluster_data = []
             for entry in data[f"Noise_{noise_level}"]:
                 rates = {
+                    "Name": entry["Name"],
                     "CD_rate": entry["CD_rate"],
-                    "DC_rate": entry["Median_score"],
-               #     "CC_to_C_rate": entry["CC_to_C_rate"]
+                    # "DC_rate": entry["DC_rate"],
+                    "Median_score": entry["Median_score"],
+                    # "CC_to_C_rate": entry["CC_to_C_rate"]
                 }
                 cluster_data.append(rates)
 
@@ -62,14 +64,17 @@ def rodar_kmeans(noise_levels, n_clusters=3):
 
             # Aplicar K-Means com k=3
             kmeans = KMeans(n_clusters=n_clusters, random_state=42)
-            df['Cluster'] = kmeans.fit_predict(df)
+            df['Cluster'] = kmeans.fit_predict(df[['CD_rate', 'Median_score']])
 
             # Visualizar os clusters
-            plt.scatter(df['CD_rate'], df['DC_rate'], c=df['Cluster'], cmap='viridis')
+            plt.scatter(df['CD_rate'], df['Median_score'], c=df['Cluster'], cmap='viridis')
             plt.xlabel('CD_rate')
-            plt.ylabel('DC_rate')
+            plt.ylabel('Median_score')
             plt.title(f'Clusters K-Means (k={n_clusters}) - Noise {noise_level}')
             plt.colorbar(label='Cluster')
+
+            for i, txt in enumerate(df['Name']):
+                plt.annotate(txt, (df['CD_rate'][i], df['Median_score'][i]), fontsize=8, alpha=0.75)
 
             # Salvar o gráfico
             plt.savefig(f'kmeans_clusters_noise_{noise_level}.png')

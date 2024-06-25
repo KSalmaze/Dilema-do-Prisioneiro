@@ -32,7 +32,7 @@ def rodar_campeonato(noise_levels = [0.0, 0.1, 0.2, 0.3, 0.4]):
 
     # Generate tournaments
     for noise in noise_levels:
-        tournament = axl.Tournament(strategies, repetitions=5, noise=noise)
+        tournament = axl.Tournament(strategies, repetitions=5, turns=100, noise=noise)
         results = tournament.play()
         # Store results
         summary = results.summarise()

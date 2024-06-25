@@ -42,6 +42,8 @@ for noise in noise_levels:
         scores_sum[strategy_name] += entry[2]
 
         tournament_results[f'Noise_{noise}'] = scores_sum
+
+
     
     for strategy in strategies:
         if strategy.name not in scores_sum:
@@ -52,11 +54,25 @@ for noise in noise_levels:
 #     json.dump(tournament_results, f)
 
 # Salvar em csv
-with open('tournament_results.csv', 'w') as f:
+
+with open('tournament_results.csv', 'w', newline='') as f:
     writer = csv.writer(f)
-    writer.writerow(['Strategy'] + list(tournament_results.keys()))
+
+    # Escrever o cabeçalho
+    header = ['Strategy'] + [f'Noise_{noise}' for noise in noise_levels]
+    writer.writerow(header)
+
+    # Escrever as linhas para cada estratégia
     for strategy in strategies:
-        row = [strategy.name]
-        for noise in noise_levels:
-            row.append(tournament_results[f'Noise_{noise}'][strategy.name])
+        row = [strategy] + [tournament_results[f'Noise_{noise}'][strategy.name] for noise in noise_levels]
         writer.writerow(row)
+
+
+#with open('tournament_results.csv', 'w') as f:
+ #   writer = csv.writer(f)
+  #  writer.writerow(['Strategy'] + list(tournament_results.keys()))
+   # for strategy in strategies:
+    #    row = [strategy.name]
+     #   for noise in noise_levels:
+      #      row.append(tournament_results[f'Noise_{noise}'][strategy.name])
+       # writer.writerow(row)
