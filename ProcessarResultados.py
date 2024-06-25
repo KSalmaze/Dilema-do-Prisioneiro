@@ -1,6 +1,7 @@
 import json
 import pandas as pd
 from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 # Tem q testar o modelo
 
@@ -42,6 +43,13 @@ def processar_resultados():
     # Treinar o modelo
     arvore = DecisionTreeRegressor(random_state=42)
     arvore.fit(x_train, y_train)
+
+    # Fazer previsões no conjunto de teste
+    y_pred = arvore.predict(x_test)
+
+    # Calcular o erro quadrático médio
+    mse = mean_squared_error(y_test, y_pred)
+    print(f'Mean Squared Error: {mse}')
 
     # Identificar as features mais importantes
     features_importancia = arvore.feature_importances_
